@@ -46,8 +46,6 @@ def First_post():
 
 
 def Like():
-    def Like():
-
         try:
             like = driver.find_element_by_xpath('/html/body/div[4]/div[2]/div/article/div[3]/section[1]/span[1]/button')
             like.click()
