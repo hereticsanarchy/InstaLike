@@ -2,12 +2,13 @@ import time
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import InvalidElementStateException
 import tkinter as tk
 import threading
 
-driver = webdriver.Chrome()
-driver.get('http://www.instagram.com/');
-time.sleep(2)
+#driver = webdriver.Chrome()
+#driver.get('http://www.instagram.com/');
+#time.sleep(2)
 
 
 root = tk.Tk()
@@ -23,13 +24,20 @@ class Main():
         self.frame = tk.Frame(master, bg='#2f3157')
         self.frame.place(relwidth=1, relheight=1)
         self.button = tk.Button(self.frame, text='Get Likes', command=lambda: self.Threading())
-        self.button.pack()
+        self.button.place(relx=.44,rely=.8)
         self.User = tk.Entry(self.frame, textvariable=self.username)
-        self.User.pack()
+        self.User.place(relx = .53,rely=.2)
         self.Password = tk.Entry(self.frame, textvariable=self.password, show = '*')
-        self.Password.pack()
+        self.Password.place(relx = .53,rely=.32)
         self.Search = tk.Entry(self.frame, textvariable=self.search)
-        self.Search.pack()
+        self.Search.place(relx = .53,rely=.44)
+        self.UserLabel = tk.Label(text = 'Username:', fg = 'white',bg ='#2f3157' )
+        self.UserLabel.place(relx = .25,rely=.2)
+        self.PassLabel = tk.Label(text='Password:', fg='white', bg='#2f3157')
+        self.PassLabel.place(relx = .25,rely=.32)
+        self.SearchLabel = tk.Label(text='Search Term:', fg='white', bg='#2f3157')
+        self.SearchLabel.place(relx = .25,rely=.44)
+        self.driver = webdriver.Chrome()
 
     def printUser(self):
         return self.username.get()
@@ -40,31 +48,42 @@ class Main():
     def printSearch(self):
         return self.search.get()
 
-
-
-
-
     def Credentials(self):
-        username_field = driver.find_element_by_class_name('f0n8F')
+
+        self.driver.get('http://www.instagram.com/');
+        time.sleep(2)
+
+        username_field = self.driver.find_element_by_class_name('f0n8F')
+        try:
+            username_field.clear()
+        except InvalidElementStateException:
+            pass
         username_field.send_keys(self.printUser())
 
-        pw_field = driver.find_element_by_name('password')
+        pw_field = self.driver.find_element_by_name('password')
+        try:
+            pw_field.clear()
+        except InvalidElementStateException:
+            pass
         pw_field.send_keys(self.printPass())
 
         time.sleep(5)
 
     def Login(self):
-        login_button = driver.find_element_by_tag_name('button.sqdOP.L3NKy.y3zKF')
+        login_button = self.driver.find_element_by_tag_name('button.sqdOP.L3NKy.y3zKF')
         login_button.click()
 
         time.sleep(3)
 
     def Notifications(self):
-        notifications= driver.find_element_by_tag_name('button.aOOlW.HoLwm')
-        notifications.click()
+        try:
+            notifications= self.driver.find_element_by_tag_name('button.aOOlW.HoLwm')
+            notifications.click()
+        except NoSuchElementException:
+            pass
 
     def Search(self):
-        search = driver.find_element_by_class_name('XTCLo.x3qfX')
+        search = self.driver.find_element_by_class_name('XTCLo.x3qfX')
         search.send_keys(self.printSearch())
         time.sleep(2)
         search.send_keys(Keys.RETURN)
@@ -73,21 +92,21 @@ class Main():
 
 
     def First_post(self):
-        firstPost = driver.find_element_by_class_name("v1Nh3.kIKUG._bz0w")
+        firstPost = self.driver.find_element_by_class_name("v1Nh3.kIKUG._bz0w")
         firstPost.click()
 
 
     def Like(self):
 
             try:
-                like = driver.find_element_by_xpath('/html/body/div[4]/div[2]/div/article/div[3]/section[1]/span[1]/button')
+                like = self.driver.find_element_by_xpath('/html/body/div[4]/div[2]/div/article/div[3]/section[1]/span[1]/button')
                 like.click()
             except NoSuchElementException:
                 pass
 
 
     def NextPost(self):
-        nextPost = driver.find_element_by_class_name('_65Bje.coreSpriteRightPaginationArrow')
+        nextPost = self.driver.find_element_by_class_name('_65Bje.coreSpriteRightPaginationArrow')
         nextPost.click()
 
     def Start(self):
@@ -117,6 +136,7 @@ class Main():
 app = Main(root)
 root.wm_resizable(width=False, height=False)
 root.geometry('400x200')
+root.title('InstaLike Bot')
 
 
 root.mainloop()
