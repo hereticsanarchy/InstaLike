@@ -6,9 +6,7 @@ from selenium.common.exceptions import InvalidElementStateException
 import tkinter as tk
 import threading
 
-#driver = webdriver.Chrome()
-#driver.get('http://www.instagram.com/');
-#time.sleep(2)
+
 
 
 root = tk.Tk()
@@ -16,7 +14,7 @@ root = tk.Tk()
 
 class Main():
 
-    def __init__(self, master):
+    def __init__(self, master): #GUI and Variables
         self.master = master
         self.username = tk.StringVar()
         self.password = tk.StringVar()
@@ -39,7 +37,7 @@ class Main():
         self.SearchLabel.place(relx = .25,rely=.44)
         self.driver = webdriver.Chrome()
 
-    def printUser(self):
+    def printUser(self): 
         return self.username.get()
 
     def printPass(self):
@@ -48,7 +46,7 @@ class Main():
     def printSearch(self):
         return self.search.get()
 
-    def Credentials(self):
+    def Credentials(self): #Pass user defined credentials to instagram
 
         self.driver.get('http://www.instagram.com/');
         time.sleep(2)
@@ -75,14 +73,14 @@ class Main():
 
         time.sleep(3)
 
-    def Notifications(self):
+    def Notifications(self): #Bypass notification screen if needed
         try:
             notifications= self.driver.find_element_by_tag_name('button.aOOlW.HoLwm')
             notifications.click()
         except NoSuchElementException:
             pass
 
-    def Search(self):
+    def Search(self): #Enter and search for user defined key word(s)
         search = self.driver.find_element_by_class_name('XTCLo.x3qfX')
         search.send_keys(self.printSearch())
         search.send_keys(Keys.RETURN)
@@ -90,12 +88,12 @@ class Main():
         time.sleep(3)
 
 
-    def First_post(self):
+    def First_post(self): #Click into first post
         firstPost = self.driver.find_element_by_class_name("v1Nh3.kIKUG._bz0w")
         firstPost.click()
 
 
-    def Like(self):
+    def Like(self): #Like if 'like' button is available, otherwise pass (in case of videos or images not loading)
 
             try:
                 like = self.driver.find_element_by_xpath('/html/body/div[4]/div[2]/div/article/div[3]/section[1]/span[1]/button')
@@ -108,7 +106,7 @@ class Main():
         nextPost = self.driver.find_element_by_class_name('_65Bje.coreSpriteRightPaginationArrow')
         nextPost.click()
 
-    def Start(self):
+    def Start(self): #Auto login and search
 
         Main.Credentials(self)
         Main.Login(self)
@@ -117,7 +115,7 @@ class Main():
         Main.First_post(self)
 
         i = 0
-        while i < 499:
+        while i < 499:  # Like 1 image every 25 seconds, up to 500 images
 
             time.sleep(5)
             Main.Like(self)
@@ -130,7 +128,7 @@ class Main():
 
 
 app = Main(root)
-root.wm_resizable(width=False, height=False)
+root.wm_resizable(width=False, height=False) #Lock screen dimensions
 root.geometry('400x200')
 root.title('InstaLike Bot')
 
