@@ -23,7 +23,7 @@ class Main():
         self.search = tk.StringVar()
         self.frame = tk.Frame(master, bg='#2f3157')
         self.frame.place(relwidth=1, relheight=1)
-        self.button = tk.Button(self.frame, text='Get Likes', command=lambda: self.Threading())
+        self.button = tk.Button(self.frame, text='Get Likes', command=lambda: self.Start())
         self.button.place(relx=.44,rely=.8)
         self.User = tk.Entry(self.frame, textvariable=self.username)
         self.User.place(relx = .53,rely=.2)
@@ -85,7 +85,6 @@ class Main():
     def Search(self):
         search = self.driver.find_element_by_class_name('XTCLo.x3qfX')
         search.send_keys(self.printSearch())
-        time.sleep(2)
         search.send_keys(Keys.RETURN)
         search.send_keys(Keys.RETURN)
         time.sleep(3)
@@ -112,7 +111,6 @@ class Main():
     def Start(self):
 
         Main.Credentials(self)
-        time.sleep(5)
         Main.Login(self)
         Main.Notifications(self)
         Main.Search(self)
@@ -127,9 +125,7 @@ class Main():
             Main.NextPost(self)
             i+=1
 
-    def Threading(self):
-        Thread = threading.Thread(target=self.Start())
-        Thread.start()
+    
 
 
 
