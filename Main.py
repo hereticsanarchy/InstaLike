@@ -75,7 +75,7 @@ class Main():
 
     def Notifications(self): #Bypass notification screen if needed
         try:
-            notifications= self.driver.find_element_by_tag_name('button.aOOlW.HoLwm')
+            notifications= self.driver.find_element_by_class_name('mt3GC')
             notifications.click()
         except NoSuchElementException:
             pass
@@ -86,7 +86,9 @@ class Main():
         search.send_keys(Keys.RETURN)
         search.send_keys(Keys.RETURN)
         time.sleep(3)
-
+        post = self.driver.find_element_by_class_name('yCE8d)
+        post.click()
+        time.sleep(7)
 
     def First_post(self): #Click into first post
         firstPost = self.driver.find_element_by_class_name("v1Nh3.kIKUG._bz0w")
